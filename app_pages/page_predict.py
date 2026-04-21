@@ -1,18 +1,15 @@
 import streamlit as st
 import pandas as pd
-import joblib
-
-# Load model
-model = joblib.load(
-    "outputs/ml_pipeline/predict_saleprice/v1_gb_final/model_pipeline.pkl"
-)
 
 
 def page_predict_body():
-     """
-     Displays an interactive form to predict house prices using a trained ML model.
-     """
-
+    """
+    Displays an interactive form to predict house prices using a trained ML model.
+    """
+    import joblib
+    model = joblib.load(
+        "outputs/ml_pipeline/predict_saleprice/v1_gb_final/model_pipeline.pkl"
+    )
     st.title("Predict House Price")
 
     st.write("Enter house details below:")
