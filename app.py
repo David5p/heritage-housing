@@ -1,8 +1,5 @@
-from app_pages.page_technical import page_technical_body
-from app_pages.page_hypothesis import page_hypothesis_body
-from app_pages.page_inherited_houses import page_inherited_houses_body
-from app_pages.page_correlation import page_correlation_body
 import streamlit as st
+
 from app_pages.multipage import MultiPage
 
 from app_pages.page_summary import page_summary_body
