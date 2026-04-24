@@ -57,6 +57,6 @@ def page_predict_body():
             st.success(f"Estimated Price: ${prediction[0]:,.0f}")
 
             st.caption(
-                "Note: This model is trained on U.S. housing data and provides estimates based on historical patterns. "
+                "Note: This model is trained on U.S. housing data and provides estimates based on historical patterns for houses in Ames, Iowa. "
                 "It is not intended for real-world property valuation."
             )
