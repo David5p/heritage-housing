@@ -15,20 +15,21 @@ def page_correlation_body():
 
     # correlation calculation
     corr = df.corr(numeric_only=True)["SalePrice"].sort_values(ascending=False)
+    corr = corr.drop("SalePrice")
 
     st.write("## Top Correlated Features")
     st.dataframe(corr.head(15))
 
     st.write("## Correlation Bar Plot")
     plt.figure(figsize=(10, 6))
-    corr.drop("SalePrice").head(10).plot(kind="bar")
+    corr.head(10).plot(kind="bar")
     plt.title("Top 10 Features Correlated with SalePrice")
     plt.ylabel("Correlation")
     st.pyplot(plt)
 
     st.write("## Scatterplots of Key Variables")
 
-    top_features = corr.drop("SalePrice").head(4).index
+    top_features = corr.head(4).index
 
     for feature in top_features:
         st.write(f"### {feature} vs SalePrice")

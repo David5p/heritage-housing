@@ -9,17 +9,18 @@ def page_hypothesis_body():
     Houses with larger living area (GrLivArea) will have higher sale prices.
 
     **Validation:**  
-    Correlation analysis shows GrLivArea is strongly positively correlated with SalePrice.
+    GrLivArea shows a strong positive correlation with SalePrice, supporting this hypothesis.
 
     ## Hypothesis 2
     Newer houses (YearBuilt) tend to sell for more.
 
     **Validation:**  
-    YearBuilt shows a positive relationship with SalePrice.
+    YearBuilt shows a moderate positive relationship with SalePrice, supporting the hypothesis.
 
     ## Hypothesis 3
-    Houses with higher kitchen quality (KitchenQual) have a higher SalePrice.
+    Houses with higher kitchen quality (KitchenQual) have higher sale prices.
 
     **Validation:**  
-    Kitchen quality (KitchenQual) has one of the strongest correlations with SalePrice, confirming this hypothesis.
+    Kitchen quality is among the more important categorical predictors of SalePrice and shows a clear positive relationship.  
+    This hypothesis is supported, but it is not the strongest predictor compared to top-ranked features.
     """)
