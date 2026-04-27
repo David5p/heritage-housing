@@ -300,6 +300,19 @@ Power transformations (Box-Cox / Yeo-Johnson) were applied to reduce skewness in
 - However, not all variables could be fully normalised due to mixed distributions.
 - As a result, some mild skewness remains in the dataset, which may slightly affect model assumptions.
 
+### 3. Multicollinearity Trade-offs
+
+Smart correlation selection reduced multicollinearity by removing highly redundant features, improving model efficiency.
+
+![High multicollinearity is visible, with many strongly correlated feature groups creating redundancy.](assets/images/correlation_heatmap_before.png)
+
+[Reduced multicollinearity after feature selection, while retaining some correlated features for interpretability.](assets/images/correlation_heatmap_after.png)
+
+- Some correlated variables (e.g., GrLivArea and TotalBsmtSF) were intentionally retained to preserve interpretability.
+- This introduces controlled redundancy while keeping meaningful, domain-relevant information.
+
+Overall, this balances reduced multicollinearity with model interpretability.
+
 ## Deployment
 
 ### Heroku
