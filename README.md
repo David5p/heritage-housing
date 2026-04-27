@@ -273,9 +273,32 @@ The image below shows the technical performance of the trained model.
 
 ![Technical Page](assets/images/streamlit_technical.png)
 
-## Unfixed Bugs
+## Unfixed Bugs and Limitations
 
-- You will need to mention unfixed bugs and why they were not fixed. This section should include shortcomings of the frameworks or technologies used. Although time can be a big variable to consider, paucity of time and difficulty understanding implementation is not valid reason to leave bugs unfixed.
+During development, several modelling limitations and trade-offs were identified. These were not left unresolved due to oversight, but rather reflect deliberate design choices made during feature engineering and model optimisation to balance performance, interpretability, and data constraints.
+
+### 1. Impact of Outliers After Winsorization
+
+Outliers in numerical variables such as `GrLivArea`, `LotArea`, and `SalePrice` were addressed using winsorization.
+
+- This reduced the influence of extreme values while preserving dataset integrity.
+- However, some residual extreme values may still influence model predictions. Prediction error increases for higher-value houses due to fewer training examples in this range.
+
+The plot shows that model prediction becomes less consistent at higher values.
+
+![Actual vs Predicted](assets/images/model_plot.png)
+
+- More aggressive approaches such as full removal or heavy transformation were avoided to maintain representation of rare but valid luxury homes.
+
+### 2. Residual Skewness in Numerical Features
+
+Power transformations (Box-Cox / Yeo-Johnson) were applied to reduce skewness in selected numerical features.
+
+- Power transformations reduced skewness in key numerical features, improving distribution symmetry and model stability.
+  ![Feature skewness before vs After transformation](assets/images/feature_skewness_plot.png)
+
+- However, not all variables could be fully normalised due to mixed distributions.
+- As a result, some mild skewness remains in the dataset, which may slightly affect model assumptions.
 
 ## Deployment
 
