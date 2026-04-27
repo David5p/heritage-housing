@@ -348,8 +348,9 @@ Overall, the final model is a balanced solution aligned with the objective of ac
 
 ### Heroku
 
-- The App live link is: <https://YOUR_APP_NAME.herokuapp.com/>
-- Set the .python-version Python version to a [Heroku-24](https://devcenter.heroku.com/articles/python-support#supported-runtimes) stack currently supported version.
+- The app live link is: https://housing-predictor-4875a00b4789.herokuapp.com/
+
+- Ensure the `.python-version` file uses a Heroku-supported Python version (e.g. Python 3.11).
 - The project was deployed to Heroku using the following steps.
 
 1. Log in to Heroku and create an App
@@ -361,7 +362,55 @@ Overall, the final model is a balanced solution aligned with the objective of ac
 
 ## Main Data Analysis and Machine Learning Libraries
 
-- Here you should list the libraries you used in the project and provide example(s) of how you used these libraries.
+### Data handling & computation
+
+- **pandas** – data loading, cleaning, and feature engineering
+- **numpy** – numerical operations and array processing
+- **scipy** – statistical analysis and distributions
+
+![Feature skewness before and after log transformation, demonstrating improved distribution symmetry using pandas, numpy, and matplotlib.](assets/images/feature_skewness_plot.png)
+
+### Data visualization
+
+- **matplotlib** – plotting graphs and model evaluation visuals
+- **seaborn** – statistical visualizations (heatmaps, distributions)
+
+![Generated using pandas (correlation matrix), seaborn, and matplotlib to highlight strong feature relationships for feature selection.](jupyter_notebooks/outputs/images/correlation_heatmap.png)
+
+### Preprocessing & feature engineering
+
+- **scikit-learn** – data splitting, scaling, pipelines, feature selection, and evaluation
+- **feature-engine** – advanced preprocessing including encoding, outlier handling, and correlation-based feature selection
+
+![Boxplot demonstrating the effect of Winsorization on GrLivArea (or another variable) in the training dataset. The transformation reduces extreme outliers, improving model robustness and stability. Applied using feature-engine](assets/images/winsorization_train.png)
+
+- **PowerTransformer** – used for stabilizing variance and improving normality of features
+
+### Models & machine learning
+
+- **scikit-learn models** – Linear Regression, Ridge, Lasso, Random Forest, Gradient Boosting, Extra Trees
+
+![Feature importance plot from the GradientBoostingRegressor, showing the top predictors for SalePrice. The most important features include GrLivArea, YearBuilt, and TotalBsmtSF.](assets/images/feature_importance.png)
+
+- **XGBoost** – final high-performance regression model
+
+### Model evaluation & tuning
+
+- **GridSearchCV** – hyperparameter tuning
+- **scikit-learn metrics** – MAE, RMSE, R² scoring
+
+### Pipeline & deployment support
+
+- **Pipeline / ColumnTransformer** – streamlined preprocessing and modeling workflow
+- **joblib** – model saving and loading
+- **pathlib / os / sys** – file path and system handling
+
+### Data exploration
+
+- **ydata-profiling** – automated exploratory data analysis report generation
+
+For a detailed analysis of the dataset, including missing values, distributions, correlations, and more, check out the Exploratory Data Analysis (EDA) Report [here](https://david5p.github.io/heritage-housing/house_prices_report.html)
+. This report is generated using ydata-profiling and provides comprehensive insights into the dataset.
 
 ## Credits
 
