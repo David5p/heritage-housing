@@ -306,12 +306,24 @@ Smart correlation selection reduced multicollinearity by removing highly redunda
 
 ![High multicollinearity is visible, with many strongly correlated feature groups creating redundancy.](assets/images/correlation_heatmap_before.png)
 
-[Reduced multicollinearity after feature selection, while retaining some correlated features for interpretability.](assets/images/correlation_heatmap_after.png)
+![Reduced multicollinearity after feature selection, while retaining some correlated features for interpretability.](assets/images/correlation_heatmap_after.png)
 
 - Some correlated variables (e.g., GrLivArea and TotalBsmtSF) were intentionally retained to preserve interpretability.
 - This introduces controlled redundancy while keeping meaningful, domain-relevant information.
 
 Overall, this balances reduced multicollinearity with model interpretability.
+
+### 4. Encoding Strategy Trade-offs
+
+A combination of ordinal encoding and one-hot encoding was applied depending on feature type:
+
+- Ordinal encoding was used for ordered categorical variables.
+- One-hot encoding was used for nominal categorical variables.
+
+- This improved model performance by allowing better representation of categorical features.
+- However, it increased feature dimensionality and made individual features harder to interpret in the final model.
+
+Overall, this reflects a trade-off between predictive performance and interpretability.
 
 ## Deployment
 
