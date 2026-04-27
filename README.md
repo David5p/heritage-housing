@@ -1,76 +1,157 @@
 # ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
+# Heritage Housing Issues - House Price Prediction
+
 ## Dataset Content
 
-- The dataset is sourced from [Kaggle](https://www.kaggle.com/codeinstitute/housing-prices-data). We then created a fictitious user story where predictive analytics can be applied in a real project in the workplace.
-- The dataset has almost 1.5 thousand rows and represents housing records from Ames, Iowa, indicating house profile (Floor Area, Basement, Garage, Kitchen, Lot, Porch, Wood Deck, Year Built) and its respective sale price for houses built between 1872 and 2010.
+- The dataset is sourced from [Kaggle](https://www.kaggle.com/codeinstitute/housing-prices-data). A fictitious business case was created to demonstrate how predictive analytics can be applied in a real-world scenario.
+- The dataset contains nearly 1,500 housing records from Ames, Iowa. It includes house attributes (floor area, basement, garage, kitchen quality, lot size, porch, wood deck, year built, etc.) and the corresponding sale price for houses built between 1872 and 2010.
 
-| Variable      | Meaning                                                                 | Units                                                                                                                                                                   |
-| :------------ | :---------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1stFlrSF      | First Floor square feet                                                 | 334 - 4692                                                                                                                                                              |
-| 2ndFlrSF      | Second-floor square feet                                                | 0 - 2065                                                                                                                                                                |
-| BedroomAbvGr  | Bedrooms above grade (does NOT include basement bedrooms)               | 0 - 8                                                                                                                                                                   |
-| BsmtExposure  | Refers to walkout or garden level walls                                 | Gd: Good Exposure; Av: Average Exposure; Mn: Minimum Exposure; No: No Exposure; None: No Basement                                                                       |
-| BsmtFinType1  | Rating of basement finished area                                        | GLQ: Good Living Quarters; ALQ: Average Living Quarters; BLQ: Below Average Living Quarters; Rec: Average Rec Room; LwQ: Low Quality; Unf: Unfinshed; None: No Basement |
-| BsmtFinSF1    | Type 1 finished square feet                                             | 0 - 5644                                                                                                                                                                |
-| BsmtUnfSF     | Unfinished square feet of basement area                                 | 0 - 2336                                                                                                                                                                |
-| TotalBsmtSF   | Total square feet of basement area                                      | 0 - 6110                                                                                                                                                                |
-| GarageArea    | Size of garage in square feet                                           | 0 - 1418                                                                                                                                                                |
-| GarageFinish  | Interior finish of the garage                                           | Fin: Finished; RFn: Rough Finished; Unf: Unfinished; None: No Garage                                                                                                    |
-| GarageYrBlt   | Year garage was built                                                   | 1900 - 2010                                                                                                                                                             |
-| GrLivArea     | Above grade (ground) living area square feet                            | 334 - 5642                                                                                                                                                              |
-| KitchenQual   | Kitchen quality                                                         | Ex: Excellent; Gd: Good; TA: Typical/Average; Fa: Fair; Po: Poor                                                                                                        |
-| LotArea       | Lot size in square feet                                                 | 1300 - 215245                                                                                                                                                           |
-| LotFrontage   | Linear feet of street connected to property                             | 21 - 313                                                                                                                                                                |
-| MasVnrArea    | Masonry veneer area in square feet                                      | 0 - 1600                                                                                                                                                                |
-| EnclosedPorch | Enclosed porch area in square feet                                      | 0 - 286                                                                                                                                                                 |
-| OpenPorchSF   | Open porch area in square feet                                          | 0 - 547                                                                                                                                                                 |
-| OverallCond   | Rates the overall condition of the house                                | 10: Very Excellent; 9: Excellent; 8: Very Good; 7: Good; 6: Above Average; 5: Average; 4: Below Average; 3: Fair; 2: Poor; 1: Very Poor                                 |
-| OverallQual   | Rates the overall material and finish of the house                      | 10: Very Excellent; 9: Excellent; 8: Very Good; 7: Good; 6: Above Average; 5: Average; 4: Below Average; 3: Fair; 2: Poor; 1: Very Poor                                 |
-| WoodDeckSF    | Wood deck area in square feet                                           | 0 - 736                                                                                                                                                                 |
-| YearBuilt     | Original construction date                                              | 1872 - 2010                                                                                                                                                             |
-| YearRemodAdd  | Remodel date (same as construction date if no remodelling or additions) | 1950 - 2010                                                                                                                                                             |
-| SalePrice     | Sale Price                                                              | 34900 - 755000                                                                                                                                                          |
+| Variable      | Meaning                                                    | Units / Values                     |
+| :------------ | :--------------------------------------------------------- | :--------------------------------- |
+| 1stFlrSF      | First floor square feet                                    | 334 - 4692                         |
+| 2ndFlrSF      | Second-floor square feet                                   | 0 - 2065                           |
+| BedroomAbvGr  | Bedrooms above grade (does NOT include basement bedrooms)  | 0 - 8                              |
+| BsmtExposure  | Walkout or garden level walls                              | Gd, Av, Mn, No, None               |
+| BsmtFinType1  | Rating of basement finished area                           | GLQ, ALQ, BLQ, Rec, LwQ, Unf, None |
+| BsmtFinSF1    | Type 1 finished square feet                                | 0 - 5644                           |
+| BsmtUnfSF     | Unfinished square feet of basement area                    | 0 - 2336                           |
+| TotalBsmtSF   | Total square feet of basement area                         | 0 - 6110                           |
+| GarageArea    | Size of garage in square feet                              | 0 - 1418                           |
+| GarageFinish  | Interior finish of the garage                              | Fin, RFn, Unf, None                |
+| GarageYrBlt   | Year garage was built                                      | 1900 - 2010                        |
+| GrLivArea     | Above grade (ground) living area square feet               | 334 - 5642                         |
+| KitchenQual   | Kitchen quality                                            | Ex, Gd, TA, Fa, Po                 |
+| LotArea       | Lot size in square feet                                    | 1300 - 215245                      |
+| LotFrontage   | Linear feet of street connected to property                | 21 - 313                           |
+| MasVnrArea    | Masonry veneer area in square feet                         | 0 - 1600                           |
+| EnclosedPorch | Enclosed porch area in square feet                         | 0 - 286                            |
+| OpenPorchSF   | Open porch area in square feet                             | 0 - 547                            |
+| OverallCond   | Rates the overall condition of the house                   | 1 - 10                             |
+| OverallQual   | Rates the overall material and finish of the house         | 1 - 10                             |
+| WoodDeckSF    | Wood deck area in square feet                              | 0 - 736                            |
+| YearBuilt     | Original construction date                                 | 1872 - 2010                        |
+| YearRemodAdd  | Remodel date (same as construction date if no remodelling) | 1950 - 2010                        |
+| SalePrice     | Sale price                                                 | 34900 - 755000                     |
+
+---
 
 ## Business Requirements
 
-As a good friend, you are requested by your friend, who has received an inheritance from a deceased great-grandfather located in Ames, Iowa, to help in maximising the sales price for the inherited properties.
+A client has inherited four houses in Ames, Iowa, and wants support in maximizing the sales price of these properties. The client has access to a public dataset containing house prices and attributes from Ames, Iowa, and would like to use it to make informed decisions.
 
-Although your friend has an excellent understanding of property prices in her own state and residential area, she fears that basing her estimates for property worth on her current knowledge might lead to inaccurate appraisals. What makes a house desirable and valuable where she comes from might not be the same in Ames, Iowa. She found a public dataset with house prices for Ames, Iowa, and will provide you with that.
+The client requires:
 
-- 1 - The client is interested in discovering how the house attributes correlate with the sale price. Therefore, the client expects data visualisations of the correlated variables against the sale price to show that.
-- 2 - The client is interested in predicting the house sale price from her four inherited houses and any other house in Ames, Iowa.
+1. **Data Visualization and Correlation Study**  
+   The client is interested in understanding how house attributes correlate with sale price. Therefore, the client expects visualizations of the most correlated variables against SalePrice.
 
-## Hypothesis and how to validate?
+2. **House Sale Price Prediction**  
+   The client is interested in predicting the sale price of the four inherited houses, as well as any other house in Ames, Iowa.
 
-- Hypothesis 1 - House Size: Houses with a larger above-ground living area (GrLivArea) tend to have higher sale prices.
-  This will be validated using scatter plots of GrLivArea vs SalePrice and by calculating Pearson correlation to measure the strength of the relationship.
+## Project Hypotheses and Validation Plan
 
-- Hypothesis 2 - Age of the House: Newer houses tend to have higher sale prices than older houses.
-  This will be validated by creating a house age feature (based on YearBuilt), visualizing its relationship with SalePrice, and analyzing correlations and grouped summary statistics (e.g., average price by age groups).
-- Hypothesis 3 - Kitchen Quality: Houses with higher kitchen quality (KitchenQual) tend to have higher sale prices.
-  This will be validated using boxplots comparing SalePrice across kitchen quality categories and by calculating mean SalePrice for each category to identify trends.
+- **Hypothesis 1: House Size**  
+  Houses with a larger above-ground living area (GrLivArea) tend to have higher sale prices.  
+  This will be validated using scatter plots of GrLivArea vs SalePrice and by calculating Pearson correlation.
 
-## The rationale to map the business requirements to the Data Visualisations and ML tasks
+- **Hypothesis 2: Age of the House**  
+  Newer houses tend to have higher sale prices than older houses.  
+  This will be validated by creating a house age feature (based on YearBuilt), visualizing its relationship with SalePrice, and analyzing correlations and grouped summary statistics.
 
-- Understand key drivers of house prices
-  To identify the most influential factors affecting house prices, we use correlation analysis and feature importance from the machine learning model. This helps convert raw housing data into actionable insights for pricing strategy and property valuation.
+- **Hypothesis 3: Kitchen Quality**  
+  Houses with higher kitchen quality (KitchenQual) tend to have higher sale prices.  
+  This will be validated using boxplots comparing SalePrice across kitchen quality categories and calculating mean SalePrice per category.
 
-- Assess the impact of property size on price
-  The relationship between above-ground living area (GrLivArea) and SalePrice is visualized using scatter plots and regression analysis. This supports a regression-based ML task where size-related features are expected to be strong predictors of price.
+## The Rationale to Map the Business Requirements to the Data Visualisations and ML Tasks
 
-- Evaluate the effect of property age on value
-  The age of a house, derived from YearBuilt, is analyzed using grouped comparisons and distribution plots. This justifies including engineered age features in the regression model to improve predictive accuracy.
+- **Business Requirement 1: Data Visualisation and Correlation Study**  
+  Correlation analysis and visualizations (scatter plots, boxplots, and heatmaps) will be used to identify the house attributes most strongly associated with SalePrice. This helps translate raw housing data into actionable insights and supports feature selection for model training.
 
-- Determine how quality features influence price
-  Features such as KitchenQual are explored using boxplots and category-based summary statistics. This supports encoding categorical quality variables in the ML pipeline to capture non-linear effects on price.
-
-- Build a predictive model for house price estimation
-  A supervised regression model (Gradient Boosting Regressor) is used to predict SalePrice for any propery in Ames, Iowa . This aligns with the business need for accurate price estimation based on structural and qualitative housing features.
+- **Business Requirement 2: Predictive Modelling**  
+  A supervised regression machine learning model will be developed to predict SalePrice based on housing attributes. This enables the client to estimate the value of the inherited houses and provides a tool for predicting prices of other houses in Ames, Iowa.
 
 ## ML Business Case
 
-- In the previous bullet, you potentially visualised an ML task to answer a business requirement. You should frame the business case using the method we covered in the course.
+### What are the business requirements?
+
+- Identify which house attributes are most correlated with SalePrice through analysis and visualization.
+- Predict sale prices for the four inherited houses and any other property in Ames, Iowa.
+
+### Can conventional data analysis answer part of the business requirements?
+
+Yes. Correlation studies, visualizations, and summary statistics can be used to understand which variables influence SalePrice.
+
+### Does the client need a dashboard or an API endpoint?
+
+The client requires a dashboard to explore insights and generate predicted house prices.
+
+### What does the client consider a successful project outcome?
+
+- A study showing the most relevant variables correlated to SalePrice.
+- A model capable of predicting sale prices for the four inherited houses and other houses in Ames, Iowa.
+
+### Epics and User Stories
+
+- **Epic 1: Data Collection and Understanding**  
+  User Story: As a client, I want housing data so that I can understand which factors influence house prices.
+
+- **Epic 2: Data Cleaning and Preparation**  
+  User Story: As a data analyst, I want to clean and prepare the dataset so that it is suitable for analysis and machine learning.
+
+- **Epic 3: Data Visualization and Correlation Study**  
+  User Story: As a client, I want visual insights showing which house attributes correlate with sale price.
+
+- **Epic 4: Model Training and Evaluation**  
+  User Story: As a client, I want a reliable model that predicts house sale price so I can estimate the value of the inherited properties.
+
+- **Epic 5: Dashboard Development**  
+  User Story: As a user, I want an interactive dashboard so I can explore insights and generate predictions.
+
+- **Epic 6: Deployment**  
+  User Story: As a client, I want the dashboard deployed so I can access the system easily.
+
+### Ethical or Privacy Concerns
+
+No major ethical or privacy concerns are expected, as the dataset is publicly available and does not contain sensitive personal information.
+
+### Does the data suggest a particular model?
+
+Yes. Since SalePrice is a continuous numeric variable, the problem is best approached using supervised regression models.
+
+### What are the model inputs and intended outputs?
+
+- **Inputs:** House attributes (for example: GrLivArea, YearBuilt, GarageArea, KitchenQual, etc.)
+- **Output:** Predicted SalePrice
+
+### Performance Goal
+
+The agreed performance goal is an **R² score of at least 0.75** on both the training and test sets.
+
+### How will the client benefit?
+
+The client will benefit by being able to estimate the market value of the inherited properties and maximize potential sale prices using reliable predictive insights.
+
+## Dashboard Expectations
+
+The dashboard will include:
+
+- **Project Summary Page**  
+  Dataset overview and client requirements.
+
+- **Correlation Study Page**  
+  Visual findings showing which variables are most correlated with SalePrice.
+
+- **Inherited House Price Prediction Page**  
+  Displays the four inherited houses’ attributes and predicted sale price for each, including the summed predicted total.
+
+- **House Price Prediction Tool**  
+  Interactive widgets allowing users to input house attributes and generate real-time sale price predictions.
+
+- **Hypothesis and Validation Page**  
+  Lists project hypotheses and explains how they were tested.
+
+- **Technical Page**  
+  Displays model performance metrics and the deployed pipeline steps.
 
 ## Dashboard Design
 
