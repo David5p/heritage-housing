@@ -325,6 +325,25 @@ A combination of ordinal encoding and one-hot encoding was applied depending on 
 
 Overall, this reflects a trade-off between predictive performance and interpretability.
 
+### 5. Performance on Extreme Property Values
+
+Although preprocessing improved overall robustness, the model is still less accurate for extreme or atypical properties.
+
+- This is due to limited representation of outlier cases in the training data.
+- As a result, the model performs best on typical housing profiles, with higher error at the upper end of property values.
+
+## Summary
+
+The feature engineering pipeline addressed key data quality issues through systematic preprocessing, including encoding, transformation, outlier handling, and correlation filtering.
+
+Remaining limitations are mainly due to:
+
+- inherent dataset distribution constraints
+- trade-offs between model performance and interpretability
+- limited representation of extreme property values
+
+Overall, the final model is a balanced solution aligned with the objective of accurate and generalisable house price prediction.
+
 ## Deployment
 
 ### Heroku
