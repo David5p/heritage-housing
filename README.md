@@ -461,38 +461,14 @@ This report is generated using **ydata-profiling** and provides comprehensive in
 - The feature engineering notebook workflow and custom transformation evaluation functions were adapted from the walkthrough.
 - The modelling notebook workflow used in this project was adapted from this project. In particular, the regression benchmarking approach, the reusable pipeline-building function, and the custom `HyperparameterOptimizationSearch` class (used to run GridSearchCV across multiple candidate models and summarise cross-validation results) were originally developed in the Churnometer project and then modified for predicting **SalePrice** in the Heritage Housing dataset.
 
--
-
 - I also followed the same steps for Heroku deployment as directed in the walkthrough project.
-- The Testing Times module was also very useful to support me in creating my automated tests.
+
 - I used StackOverflow a few times as mentioned in my Bugs section to help me resolve issues.
-- My mentor also supported me when there was an error on my form where the email field was causing a problem with validation. Django expected to find the email field but it was not included leading to the validation to fail.
 
-During development, the following resources were frequently used:
+### External Resources Used During Development
 
-- [Django Documentation](https://docs.djangoproject.com/en/4.2/)
-- [Bootstrap Documentation](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
-- [W3Schools](https://www.w3schools.com/) — for general troubleshooting and information on features.
-- [ChatGPT](https://chatgpt.com/) — used for explaining framework behaviour and providing examples during development.
+The following resources were used to support development, debugging, and understanding of key concepts:
 
-### Content
-
-- The text for the Home page was taken from Wikipedia Article A
-- Instructions on how to implement form validation on the Sign-Up page was taken from [Specific YouTube Tutorial](https://www.youtube.com/)
-- The icons in the footer were taken from [Font Awesome](https://fontawesome.com/)
-
-### Media
-
-- The photos used on the home and sign-up page are from This Open Source site
-- The images used for the gallery page were taken from this other open-source site
-
-## Acknowledgements (optional)
-
-- In case you would like to thank the people that provided support through this project.
-
-````
-
-```
-
-```
-````
+- [StackOverflow](https://stackoverflow.com/questions) — used for troubleshooting specific implementation issues and error resolution.
+- [W3Schools](https://www.w3schools.com/) — used for quick reference and clarification of core programming concepts.
+- [ChatGPT](https://chatgpt.com/) — ChatGPT was used as a support tool for debugging assistance, conceptual clarification, and code explanation during development.
