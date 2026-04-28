@@ -277,7 +277,50 @@ The image below shows the technical performance of the trained model.
 
 During development, several modelling limitations and trade-offs were identified. These were not left unresolved due to oversight, but rather reflect deliberate design choices made during feature engineering and model optimisation to balance performance, interpretability, and data constraints.
 
-### 1. Impact of Outliers After Winsorization
+### 1. Data Cleaning
+
+I referenced a solution from [StackOverflow](https://stackoverflow.com/questions/42027862/prevent-pandas-from-reading-none-as-nan) to address an issue where Pandas was interpreting `None` values as `NaN`, which incorrectly suggested that missing values were already present in the dataset.
+
+![Pandas interpreting None as NaN](assets/images/bug_clean_data.png)
+
+Using this guidance, I replaced `None` values with the string `"Missing"`, which prevented Pandas from automatically converting them to `NaN` and ensured more accurate data cleaning validation.
+
+### 2. Skewness Reduction Using Log Transformations
+
+Skewed numerical features were transformed using `np.log1p` to improve distribution symmetry and reduce the impact of extreme values. The choice of `np.log1p` (over `np.log`) was informed by its ability to handle zero values, as discussed in Afzal Butt (n.d.).
+
+| Feature     | Original Skew | Log1p Skew |
+| ----------- | ------------- | ---------- |
+| GrLivArea   | 1.43          | 0.01       |
+| LotArea     | 11.96         | -0.01      |
+| TotalBsmtSF | 1.72          | -5.27      |
+| 1stFlrSF    | 1.42          | 0.03       |
+| BsmtFinSF1  | 1.86          | -0.62      |
+
+This transformation significantly reduced skewness across all variables, improving suitability for regression modelling.
+
+**Reference:** Afzal Butt, N. F. (n.d.). _Understanding np.log and np.log1p in NumPy_. Medium. https://medium.com/@noorfatimaafzalbutt/understanding-np-log-and-np-log1p-in-numpy-99cefa89cd30
+
+### 3. Correlation Analysis Bug
+
+While reviewing my correlation heatmap, my mentor pointed out an issue where `SalePrice` was appearing twice. This was caused by how I constructed my list of numeric features.
+
+I initially selected all numeric columns using Pandas, which already included `SalePrice`, and then manually added `SalePrice` again when computing the correlation matrix.  
+![See code below](assets/images/SalesPrice_double_code.png)
+
+This resulted in duplicate rows and columns for `SalePrice` in the heatmap.  
+![Sales Price Correlation](assets/images/SalesPrice_double.png)
+
+The duplication created redundant 1.00 correlations and made the visualization harder to interpret, potentially leading to confusion during feature analysis.
+
+To fix this, I removed `SalePrice` from the numeric column list before appending it manually:
+
+```python
+num_cols = df_clean.select_dtypes(include=['int64', 'float64']).columns.tolist()
+num_cols.remove('SalePrice')
+```
+
+### 4. Impact of Outliers After Winsorization
 
 Outliers in numerical variables such as `GrLivArea`, `LotArea`, and `SalePrice` were addressed using winsorization.
 
@@ -290,7 +333,7 @@ The plot shows that model prediction becomes less consistent at higher values.
 
 - More aggressive approaches such as full removal or heavy transformation were avoided to maintain representation of rare but valid luxury homes.
 
-### 2. Residual Skewness in Numerical Features
+### 5. Residual Skewness in Numerical Features
 
 Power transformations (Box-Cox / Yeo-Johnson) were applied to reduce skewness in selected numerical features.
 
@@ -300,7 +343,7 @@ Power transformations (Box-Cox / Yeo-Johnson) were applied to reduce skewness in
 - However, not all variables could be fully normalised due to mixed distributions.
 - As a result, some mild skewness remains in the dataset, which may slightly affect model assumptions.
 
-### 3. Multicollinearity Trade-offs
+### 6. Multicollinearity Trade-offs
 
 Smart correlation selection reduced multicollinearity by removing highly redundant features, improving model efficiency.
 
@@ -313,7 +356,7 @@ Smart correlation selection reduced multicollinearity by removing highly redunda
 
 Overall, this balances reduced multicollinearity with model interpretability.
 
-### 4. Encoding Strategy Trade-offs
+### 7. Encoding Strategy Trade-offs
 
 A combination of ordinal encoding and one-hot encoding was applied depending on feature type:
 
@@ -325,7 +368,7 @@ A combination of ordinal encoding and one-hot encoding was applied depending on 
 
 Overall, this reflects a trade-off between predictive performance and interpretability.
 
-### 5. Performance on Extreme Property Values
+### 8. Performance on Extreme Property Values
 
 Although preprocessing improved overall robustness, the model is still less accurate for extreme or atypical properties.
 
@@ -364,58 +407,73 @@ Overall, the final model is a balanced solution aligned with the objective of ac
 
 ### Data handling & computation
 
-- **pandas** – data loading, cleaning, and feature engineering
-- **numpy** – numerical operations and array processing
-- **scipy** – statistical analysis and distributions
+- **pandas** – data loading, cleaning, missing value handling, and feature engineering
+- **numpy** – numerical operations, array transformations, and feature calculations
+- **scipy** – statistical analysis, distributions, and skewness-related calculations
 
 ![Feature skewness before and after log transformation, demonstrating improved distribution symmetry using pandas, numpy, and matplotlib.](assets/images/feature_skewness_plot.png)
 
 ### Data visualization
 
-- **matplotlib** – plotting graphs and model evaluation visuals
-- **seaborn** – statistical visualizations (heatmaps, distributions)
+- **matplotlib** – plotting graphs, feature distributions, and model evaluation visuals
+- **seaborn** – statistical visualizations including heatmaps and distribution plots
 
 ![Generated using pandas (correlation matrix), seaborn, and matplotlib to highlight strong feature relationships for feature selection.](jupyter_notebooks/outputs/images/correlation_heatmap.png)
 
 ### Preprocessing & feature engineering
 
-- **scikit-learn** – data splitting, scaling, pipelines, feature selection, and evaluation
+- **scikit-learn** – train/test splitting, scaling, pipelines, feature selection, and evaluation
 - **feature-engine** – advanced preprocessing including encoding, outlier handling, and correlation-based feature selection
+- **PowerTransformer (scikit-learn)** – stabilizing variance and improving feature normality
 
-![Boxplot demonstrating the effect of Winsorization on GrLivArea (or another variable) in the training dataset. The transformation reduces extreme outliers, improving model robustness and stability. Applied using feature-engine](assets/images/winsorization_train.png)
-
-- **PowerTransformer** – used for stabilizing variance and improving normality of features
+![Boxplot demonstrating the effect of Winsorization on GrLivArea (or another variable) in the training dataset. The transformation reduces extreme outliers, improving model robustness and stability. Applied using feature-engine.](assets/images/winsorization_train.png)
 
 ### Models & machine learning
 
 - **scikit-learn models** – Linear Regression, Ridge, Lasso, Random Forest, Gradient Boosting, Extra Trees
+- **XGBoost** – final high-performance regression model for predicting house sale prices
 
 ![Feature importance plot from the GradientBoostingRegressor, showing the top predictors for SalePrice. The most important features include GrLivArea, YearBuilt, and TotalBsmtSF.](assets/images/feature_importance.png)
 
-- **XGBoost** – final high-performance regression model
-
 ### Model evaluation & tuning
 
-- **GridSearchCV** – hyperparameter tuning
-- **scikit-learn metrics** – MAE, RMSE, R² scoring
+- **GridSearchCV** – hyperparameter tuning and cross-validation search
+- **scikit-learn metrics** – MAE, RMSE, and R² scoring for model evaluation
 
 ### Pipeline & deployment support
 
-- **Pipeline / ColumnTransformer** – streamlined preprocessing and modeling workflow
-- **joblib** – model saving and loading
-- **pathlib / os / sys** – file path and system handling
+- **Pipeline / ColumnTransformer** – end-to-end preprocessing and modeling workflow
+- **joblib** – saving and loading trained models for reuse and deployment
+- **pathlib / os / sys** – project path management and file handling across environments
 
 ### Data exploration
 
 - **ydata-profiling** – automated exploratory data analysis report generation
 
-For a detailed analysis of the dataset, including missing values, distributions, correlations, and more, check out the Exploratory Data Analysis (EDA) Report [here](https://david5p.github.io/heritage-housing/house_prices_report.html)
-. This report is generated using ydata-profiling and provides comprehensive insights into the dataset.
+For a detailed analysis of the dataset, including missing values, distributions, correlations, and more, check out the Exploratory Data Analysis (EDA) Report [here](https://david5p.github.io/heritage-housing/house_prices_report.html).
+This report is generated using **ydata-profiling** and provides comprehensive insights into the dataset.
 
 ## Credits
 
-- In this section, you need to reference where you got your content, media and extra help from. It is common practice to use code from other repositories and tutorials, however, it is important to be very specific about these sources to avoid plagiarism.
-- You can break the credits section up into Content and Media, depending on what you have included in your project.
+### Churnometer Walkthrough Project
+
+- I referred to the project as a guide for setting up my Jupyter notebooks.
+- The feature engineering notebook workflow and custom transformation evaluation functions were adapted from the walkthrough.
+- The modelling notebook workflow used in this project was adapted from this project. In particular, the regression benchmarking approach, the reusable pipeline-building function, and the custom `HyperparameterOptimizationSearch` class (used to run GridSearchCV across multiple candidate models and summarise cross-validation results) were originally developed in the Churnometer project and then modified for predicting **SalePrice** in the Heritage Housing dataset.
+
+-
+
+- I also followed the same steps for Heroku deployment as directed in the walkthrough project.
+- The Testing Times module was also very useful to support me in creating my automated tests.
+- I used StackOverflow a few times as mentioned in my Bugs section to help me resolve issues.
+- My mentor also supported me when there was an error on my form where the email field was causing a problem with validation. Django expected to find the email field but it was not included leading to the validation to fail.
+
+During development, the following resources were frequently used:
+
+- [Django Documentation](https://docs.djangoproject.com/en/4.2/)
+- [Bootstrap Documentation](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
+- [W3Schools](https://www.w3schools.com/) — for general troubleshooting and information on features.
+- [ChatGPT](https://chatgpt.com/) — used for explaining framework behaviour and providing examples during development.
 
 ### Content
 
@@ -431,3 +489,10 @@ For a detailed analysis of the dataset, including missing values, distributions,
 ## Acknowledgements (optional)
 
 - In case you would like to thank the people that provided support through this project.
+
+````
+
+```
+
+```
+````
