@@ -38,8 +38,9 @@ def page_eda_body():
     st.pyplot(plt)
 
     st.write("""
-    **Insight:** Larger above-ground living area generally leads to higher sale price, 
-    confirming that house size is a major price feature.
+    **Insight:** GrLivArea shows a strong positive relationship with SalePrice, with correlation
+    later confirmed at ~0.7, indicating it is one of the strongest predictors of housing value 
+    in this dataset.”
     """)
 
     st.write("YearBuilt vs SalePrice")
@@ -49,6 +50,7 @@ def page_eda_body():
     st.pyplot(plt)
 
     st.write("""
-    **Insight:** Newer houses have a tendancy to sell for more, but the relationship is weaker 
-    than size-based features.
+    **Insight:**YearBuilt shows a moderate positive relationship with SalePrice,
+    suggesting newer properties tend to be more valuable. However, size remains a stronger
+    indicator for sale price.”
     """)
