@@ -3,7 +3,7 @@ import pandas as pd
 import joblib
 
 
-# Cached training data model + features load
+# Cached loading functions
 
 @st.cache_data
 def load_training_data():
@@ -24,53 +24,62 @@ def load_features():
     )
 
 
-def page_predict_body():
-    """
-    Displays an interactive form to predict house prices using a trained ML model.
-    """
+# Main Page Function
 
-    # Load model, features and training dataset
+def page_predict_body():
+
+    # Load assets
     model = load_model()
     feature_list = load_features()
     df_train = load_training_data()
 
-    baseline_values = df_train.median(numeric_only=True)
-
     st.title("Predict House Price")
     st.write("Enter house details below:")
 
-    # Inputs
+    # User Inputs
     gr_liv_area = st.number_input("GrLivArea", min_value=0)
     year_built = st.number_input("YearBuilt", min_value=1800, max_value=2025)
     garage_area = st.number_input("GarageArea", min_value=0)
     total_bsmt_sf = st.number_input("TotalBsmtSF", min_value=0)
 
-    # Build input dataframe
+    # Build input dataframe properly
     input_data = pd.DataFrame(columns=feature_list)
+
+    # create empty row (no fake house)
     input_data.loc[0] = 0
 
-    # Fill numeric columns with median baseline values
-    for col in baseline_values.index:
-        if col in input_data.columns:
-            input_data.at[0, col] = baseline_values[col]
+    # overwrite only user-controlled features
+    if "GrLivArea" in input_data.columns:
+        input_data.at[0, "GrLivArea"] = gr_liv_area
 
-    input_data.at[0, "GrLivArea"] = gr_liv_area
-    input_data.at[0, "YearBuilt"] = year_built
-    input_data.at[0, "GarageArea"] = garage_area
-    input_data.at[0, "TotalBsmtSF"] = total_bsmt_sf
+    if "YearBuilt" in input_data.columns:
+        input_data.at[0, "YearBuilt"] = year_built
 
-    # Prediction button + validation
+    if "GarageArea" in input_data.columns:
+        input_data.at[0, "GarageArea"] = garage_area
+
+    if "TotalBsmtSF" in input_data.columns:
+        input_data.at[0, "TotalBsmtSF"] = total_bsmt_sf
+
+    # Ensure correct column order
+    input_data = input_data[feature_list]
+
+    # Prediction
     if st.button("Predict Price"):
-        if gr_liv_area < 300:
-            st.warning(
-                "GrLivArea seems too low. Please enter a realistic value.")
-        else:
-            prediction = model.predict(input_data)
-            st.success(f"Estimated Price: ${prediction[0]:,.0f}")
 
-            st.caption(
-                "Note: The prediction is based on the values you entered. "
-                "All other missing variables are automatically set to typical (median) values "
-                "from the training dataset. The model is trained on housing data from "
-                "Ames, Iowa and provides statistical estimates, not real-world valuations."
+        # Warning instead of hard rule
+        min_area = df_train["GrLivArea"].quantile(0.01)
+
+        if gr_liv_area < min_area:
+            st.warning(
+                f"Very small house compared to training data (typical min ~{min_area:.0f} sqft)."
             )
+
+        prediction = model.predict(input_data)
+
+        st.success(f"Estimated Price: ${prediction[0]:,.0f}")
+
+        st.caption(
+            "Prediction is based on a machine learning model trained on Ames housing data. "
+            "Values are statistical estimates and not official valuations."
+        )
