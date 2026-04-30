@@ -31,5 +31,18 @@ def page_technical_body():
     st.write(f"**RMSE:** {rmse:,.2f}")
     st.write(f"**R² Score:** {r2:.3f}")
 
-    st.write("## Pipeline Steps")
+    st.write("Model Evaluation Statement")
+
+    if r2 >= 0.75:
+        st.success(
+            "The model is considered successful. "
+            f"It achieves a strong predictive performance on unseen test data (R² = {r2:.3f})."
+        )
+    else:
+        st.warning(
+            "The model performance is weaker than expected. "
+            f"It may not reliably predict house prices (R² = {r2:.3f})."
+        )
+
+    st.write("Pipeline Steps")
     st.code(model)
