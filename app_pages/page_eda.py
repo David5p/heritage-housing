@@ -40,7 +40,9 @@ def page_eda_body():
     st.write("""
     **Insight:** GrLivArea shows a strong positive relationship with SalePrice, with correlation
     later confirmed at ~0.7, indicating it is one of the strongest predictors of housing value 
-    in this dataset.”
+    in this dataset. This results in larger living areas are associated with higher sale prices, 
+    meaning square footage is a key value driver. This suggests expanding living space would likely
+    have the greatest impact on resale value.
     """)
 
     st.write("YearBuilt vs SalePrice")

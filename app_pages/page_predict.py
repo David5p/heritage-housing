@@ -34,6 +34,12 @@ def page_predict_body():
     df_train = load_training_data()
 
     st.title("Predict House Price")
+    st.write("""This prediction is based on historical housing data
+            and reflects market-driven valuation patterns. Key drivers
+            such as living area and basement size heavily influence 
+            this estimate.
+    """
+             )
     st.write("Enter house details below:")
 
     # User Inputs
