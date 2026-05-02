@@ -90,13 +90,13 @@ def page_correlation_body():
 
         st.pyplot(fig)
 
-        st.write("""
-        ### What this means for the client
-        To maximise the value of the inherited properties, priority should be given to:
+    st.write("""
+    ### What this means for the client
+    To maximise the value of the inherited properties, priority should be given to:
 
-        - Increasing usable living space (e.g. extensions or conversions)
-        - Improving or upgrading garage facilities
-        - Modernising older properties where feasible
+    - Increasing usable living space (e.g. extensions or conversions)
+    - Improving or upgrading garage facilities
+    - Modernising older properties where feasible
 
-        These actions are more likely to increase market value than cosmetic improvements alone.
-        """)
+    These actions are more likely to increase market value than cosmetic improvements alone.
+    """)
