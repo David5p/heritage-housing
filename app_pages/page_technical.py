@@ -31,17 +31,28 @@ def page_technical_body():
     st.write(f"**RMSE:** {rmse:,.2f}")
     st.write(f"**R² Score:** {r2:.3f}")
 
-    st.write("Model Evaluation Statement")
+    st.write("### Model Evaluation Statement")
 
     if r2 >= 0.75:
         st.success(
-            "The model is considered successful. "
-            f"It achieves a strong predictive performance on unseen test data (R² = {r2:.3f})."
+            f"""
+            The model demonstrates strong predictive performance on unseen data.
+
+            - R² Score: {r2:.3f}
+            - This indicates the model explains a large proportion of variance in house prices.
+            - It is suitable for deployment for supporting pricing decisions.
+            """
         )
+
     else:
         st.warning(
-            "The model performance is weaker than expected. "
-            f"It may not reliably predict house prices (R² = {r2:.3f})."
+            f"""
+            The model shows limited predictive performance.
+
+            - R² Score: {r2:.3f}
+            - This suggests the model may not generalise well to unseen data.
+            - Further feature engineering or model tuning may be required.
+            """
         )
 
     st.write("Pipeline Steps")
