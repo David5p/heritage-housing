@@ -1,3 +1,12 @@
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.feature_selection import SelectFromModel
+from sklearn.model_selection import GridSearchCV
+
+import numpy as np
+import pandas as pd
+
+
 def PipelineReg(model):
     """
     Create a regression pipeline with scaling, feature selection, and the given model.
@@ -48,38 +57,25 @@ class HyperparameterOptimizationSearch:
 
     def score_summary(self, sort_by='mean_score'):
         """
-        Return a dataframe summarizing CV scores for all searched models, sorted by a chosen metric.
+        Return a dataframe summarizing CV scores for all searched models.
         """
 
-        def row(key, scores, params):
-            """
-            Build a summary row of score statistics and hyperparameters for one estimator run.
-            """
-            d = {
-                'estimator': key,
-                'min_score': min(scores),
-                'max_score': max(scores),
-                'mean_score': np.mean(scores),
-                'std_score': np.std(scores),
-            }
-            return pd.Series({**params, **d})
-
         rows = []
+
         for k in self.grid_searches:
-            params = self.grid_searches[k].cv_results_['params']
-            scores = []
+            cv_results = self.grid_searches[k].cv_results_
 
-            for i in range(self.grid_searches[k].cv):
-                key = f"split{i}_test_score"
-                r = self.grid_searches[k].cv_results_[key]
-                scores.append(r.reshape(len(params), 1))
+            for i in range(len(cv_results["params"])):
+                rows.append({
+                    "estimator": k,
+                    "min_score": cv_results["mean_test_score"][i] - cv_results["std_test_score"][i],
+                    "mean_score": cv_results["mean_test_score"][i],
+                    "max_score": cv_results["mean_test_score"][i] + cv_results["std_test_score"][i],
+                    "std_score": cv_results["std_test_score"][i],
+                    **cv_results["params"][i]
+                })
 
-            all_scores = np.hstack(scores)
-
-            for p, s in zip(params, all_scores):
-                rows.append(row(k, s, p))
-
-        df = pd.concat(rows, axis=1).T.sort_values([sort_by], ascending=False)
+        df = pd.DataFrame(rows).sort_values(sort_by, ascending=False)
 
         columns = ['estimator', 'min_score',
                    'mean_score', 'max_score', 'std_score']
