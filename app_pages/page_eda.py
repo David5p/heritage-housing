@@ -52,7 +52,7 @@ def page_eda_body():
     st.pyplot(plt)
 
     st.write("""
-    **Insight:**YearBuilt shows a moderate positive relationship with SalePrice,
+    **Insight:** YearBuilt shows a moderate positive relationship with SalePrice,
     suggesting newer properties tend to be more valuable. However, size remains a stronger
-    indicator for sale price.”
+    indicator for sale price.
     """)
