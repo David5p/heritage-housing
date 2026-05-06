@@ -455,6 +455,10 @@ This report is generated using **ydata-profiling** and provides comprehensive in
 
 ## Credits
 
+### Code Institute Handbook: Heritage Housing Issues
+
+- I used the [Code Institute Handbook: Heritage Housing Issues] https://github.com/Code-Institute-Solutions/milestone-project-heritage-housing-issues template for project structure and deployment setup.
+
 ### Churnometer Walkthrough Project
 
 - I referred to the project as a guide for setting up my Jupyter notebooks.
