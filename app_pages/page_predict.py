@@ -4,7 +4,6 @@ import joblib
 
 
 # Cached loading functions
-
 @st.cache_data
 def load_training_data():
     return pd.read_csv("outputs/ml_pipeline/predict_saleprice/v1_gb_final/X_train.csv")
@@ -24,8 +23,6 @@ def load_features():
     )
 
 
-# Main Page Function
-
 def page_predict_body():
 
     # Load assets
@@ -44,6 +41,7 @@ def page_predict_body():
 
     st.write("Enter house details below:")
 
+    # User inputs
     gr_liv_area = st.number_input("GrLivArea", min_value=0)
     year_built = st.number_input("YearBuilt", min_value=1800, max_value=2025)
     garage_area = st.number_input("GarageArea", min_value=0)
@@ -51,22 +49,39 @@ def page_predict_body():
 
     if st.button("Predict Price"):
 
-        raw_input = pd.DataFrame([{
-            "GrLivArea": gr_liv_area,
-            "YearBuilt": year_built,
-            "GarageArea": garage_area,
-            "TotalBsmtSF": total_bsmt_sf
-        }])
+        # Validation warnings
+        warnings = []
 
-        prediction = model.predict(raw_input)
+        if gr_liv_area < 500:
+            warnings.append("Very small living area.")
 
-        # Warning instead of hard rule
-        min_area = df_train["GrLivArea"].quantile(0.01)
+        if total_bsmt_sf < 50:
+            warnings.append("Basement size unusually low.")
 
-        if gr_liv_area < min_area:
-            st.warning(
-                f"Very small house compared to training data (typical min ~{min_area:.0f} sqft)."
-            )
+        if year_built < 1800 or year_built > 2026:
+            warnings.append("YearBuilt looks unrealistic.")
+
+        for w in warnings:
+            st.warning(w)
+
+        # Build model input
+        input_data = pd.DataFrame(columns=feature_list)
+        input_data.loc[0] = 0
+
+        if "GrLivArea" in input_data.columns:
+            input_data.at[0, "GrLivArea"] = gr_liv_area
+
+        if "YearBuilt" in input_data.columns:
+            input_data.at[0, "YearBuilt"] = year_built
+
+        if "GarageArea" in input_data.columns:
+            input_data.at[0, "GarageArea"] = garage_area
+
+        if "TotalBsmtSF" in input_data.columns:
+            input_data.at[0, "TotalBsmtSF"] = total_bsmt_sf
+
+        # Prediction
+        prediction = model.predict(input_data)
 
         st.success(f"Estimated Price: ${prediction[0]:,.0f}")
 
